@@ -2,7 +2,7 @@
 
 import Sidebar from "@/components/sidebar";
 import { useIsLargeScreen } from "@/hooks/useIsLargeScreen";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaAward, FaBriefcase, FaUsers } from "react-icons/fa";
 
@@ -12,57 +12,45 @@ const experiences: string[] = [
   "🤝 Trusted by a diverse network of clients.",
 ];
 
-const cardVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.95, y: 30, rotate: -5 },
-  visible: (i: number) => ({
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    rotate: 0,
-    transition: {
-      delay: i * 0.2,
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  }),
-};
-
 const ExperiencesPage: React.FC = () => {
   const [transitionComplete, setTransitionComplete] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [currentExperience, setCurrentExperience] = useState(0);
 
   const isLargeScreen = useIsLargeScreen();
-  const isSidebarVisible = showSidebar || (isLargeScreen && transitionComplete);
+  const isSidebarVisible = showSidebar;
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const timer = setTimeout(() => setTransitionComplete(true), 800);
-    const experienceInterval = setInterval(() => {
+    const interval = setInterval(() => {
       setCurrentExperience((prev) => (prev + 1) % experiences.length);
     }, 3000);
-
     return () => {
       clearTimeout(timer);
-      clearInterval(experienceInterval);
+      clearInterval(interval);
     };
   }, []);
+
+  useEffect(() => {
+    if (isLargeScreen) setShowSidebar(true);
+  }, [isLargeScreen]);
 
   const highlights = [
     {
       title: "Startup Success",
       description: "Scaled a fintech startup from concept to Series A funding.",
-      icon: <FaBriefcase className="text-yellow-500 text-3xl mb-4" />,
+      icon: <FaBriefcase className="text-yellow-400 text-3xl mb-4" />,
     },
     {
       title: "Design Excellence",
       description: "Recipient of 2024 UX Hero award for design innovation.",
-      icon: <FaAward className="text-yellow-500 text-3xl mb-4" />,
+      icon: <FaAward className="text-yellow-400 text-3xl mb-4" />,
     },
     {
       title: "Community Impact",
       description: "Led inclusive design workshops with over 200 participants.",
-      icon: <FaUsers className="text-yellow-500 text-3xl mb-4" />,
+      icon: <FaUsers className="text-yellow-400 text-3xl mb-4" />,
     },
   ];
 
@@ -70,13 +58,13 @@ const ExperiencesPage: React.FC = () => {
     <div
       className={`flex flex-col sm:flex-row min-h-screen transition-all duration-1000 ease-in-out ${
         transitionComplete
-          ? "bg-yellow-300"
-          : "bg-yellow-300 bg-[url('/tinos.png')] bg-[position:center_top] bg-cover bg-no-repeat mix-blend-multiply"
+          ? ""
+          : "bg-[url('/tinos.png')] bg-center bg-top bg-no-repeat bg-cover mix-blend-multiply"
       }`}>
-      {!isLargeScreen && (
+      {!isSidebarVisible && (
         <button
           onClick={() => setShowSidebar(true)}
-          className="sm:hidden fixed top-4 left-4 z-30 bg-black text-white px-3 py-2 rounded shadow-md hover:bg-gray-800 transition">
+          className="fixed top-4 left-4 z-30 bg-black text-white px-3 py-2 rounded shadow-md hover:bg-gray-800 transition">
           ☰
         </button>
       )}
@@ -87,24 +75,29 @@ const ExperiencesPage: React.FC = () => {
       />
 
       <main
-        className={`min-h-screen flex items-center justify-center flex-col font-sans relative overflow-hidden px-4 py-8 sm:px-12 sm:py-16 transition-opacity duration-1000 ease-in-out ${
+        className={`min-h-screen flex-1 font-sans relative overflow-hidden px-4 py-8 sm:px-12 sm:py-16 transition-opacity duration-1000 ease-in-out ${
           transitionComplete
-            ? "bg-[url('/tinos.png')] bg-[position:center_top] bg-cover bg-no-repeat mix-blend-multiply opacity-100"
+            ? "bg-[url('/tinos.png')] bg-center bg-top bg-no-repeat bg-cover mix-blend-multiply opacity-100"
             : "opacity-0"
         }`}>
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/50 z-0" />
+
+        {/* Rotating Banner */}
         <div
-          className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg transition-opacity duration-500 z-20 text-center max-w-[90vw] break-words shadow-md backdrop-blur-md"
+          className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-yellow-500 bg-opacity-70 text-white px-4 py-2 rounded transition-opacity duration-500 z-20 text-center max-w-[90vw] break-words backdrop-blur-md shadow-md"
           aria-live="polite"
           role="status">
           {experiences[currentExperience]}
         </div>
 
+        {/* Header Section */}
         <div className="relative z-10 flex flex-col justify-center items-center max-w-screen-lg mx-auto text-center animate-fadeIn mb-16">
           <motion.h1
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
-            className="font-bold leading-none text-white drop-shadow-lg"
+            className="font-extrabold leading-none text-white drop-shadow-lg tracking-tight"
             style={{ fontSize: "clamp(2.5rem, 8vw, 6rem)" }}>
             Experiences
           </motion.h1>
@@ -113,31 +106,45 @@ const ExperiencesPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="mt-4 sm:mt-6 md:mt-8 text-white drop-shadow-md text-[clamp(1rem, 3vw, 2rem)]">
+            className="mt-4 sm:mt-6 md:mt-8 bg-gradient-to-r from-yellow-300 via-yellow-500 to-yellow-700 bg-clip-text text-transparent font-extrabold tracking-wide text-[clamp(1rem,3vw,2rem)] drop-shadow-lg animate-pulse">
             TY Designs | {currentYear}
           </motion.h2>
         </div>
 
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10 text-black">
+        {/* Highlight Cards Section */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 px-4 sm:px-12 relative z-10">
           {highlights.map((item, i) => (
             <motion.div
               key={item.title}
-              custom={i}
-              initial="hidden"
-              animate="visible"
-              variants={cardVariants}
-              whileHover={{ rotate: 3 }}
-              className="p-6 border border-yellow-500 rounded-xl shadow-lg bg-white bg-opacity-90 hover:shadow-2xl hover:-translate-y-2 transform transition-all duration-300 hover:border-black">
+              initial={{ opacity: 0, scale: 0.95, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{
+                delay: i * 0.2,
+                duration: 0.6,
+                ease: "easeOut",
+              }}
+              className="bg-white/10 p-6 rounded-lg backdrop-blur-md hover:scale-105 transition shadow-lg text-white hover:shadow-2xl">
               <div className="flex flex-col items-center text-center">
                 {item.icon}
-                <h2 className="text-xl font-semibold mb-2 text-yellow-800">
+                <h2 className="text-xl font-semibold uppercase text-yellow-400 mb-2">
                   {item.title}
                 </h2>
-                <p className="text-sm text-gray-800">{item.description}</p>
+                <p className="text-sm text-gray-300">{item.description}</p>
               </div>
             </motion.div>
           ))}
         </section>
+
+        {/* Footer */}
+        <footer className="mt-20 text-center text-gray-400 text-sm py-8 relative z-10">
+          © {currentYear} Tinotenda James — All rights reserved
+          <br />
+          <a
+            href="mailto:your@email.com"
+            className="underline hover:text-white">
+            Get in touch
+          </a>
+        </footer>
       </main>
     </div>
   );

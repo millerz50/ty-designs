@@ -18,8 +18,7 @@ const ContactPage: React.FC = () => {
   const [currentMessage, setCurrentMessage] = useState(0);
 
   const isLargeScreen = useIsLargeScreen();
-  const isSidebarVisible = showSidebar || (isLargeScreen && transitionComplete);
-  const currentYear = new Date().getFullYear();
+  const isSidebarVisible = showSidebar;
 
   useEffect(() => {
     const timer = setTimeout(() => setTransitionComplete(true), 800);
@@ -33,17 +32,26 @@ const ContactPage: React.FC = () => {
     };
   }, []);
 
+  // Ensure sidebar opens by default on large screens
+  useEffect(() => {
+    if (isLargeScreen) {
+      setShowSidebar(true);
+    }
+  }, [isLargeScreen]);
+
+  const currentYear = new Date().getFullYear();
+
   return (
     <div
       className={`flex flex-col sm:flex-row min-h-screen transition-all duration-1000 ease-in-out ${
         transitionComplete
-          ? "bg-yellow-300"
-          : "bg-yellow-300 bg-[url('/tinos.png')] bg-center bg-cover bg-no-repeat mix-blend-multiply"
+          ? ""
+          : "bg-[url('/tinos.png')] bg-center bg-cover bg-no-repeat mix-blend-multiply"
       }`}>
-      {!isLargeScreen && (
+      {!isSidebarVisible && (
         <button
           onClick={() => setShowSidebar(true)}
-          className="sm:hidden fixed top-4 left-4 z-30 bg-black text-white px-3 py-2 rounded shadow-md hover:bg-gray-800 transition">
+          className="fixed top-4 left-4 z-30 bg-black text-white px-3 py-2 rounded shadow-md hover:bg-gray-800 transition">
           ☰
         </button>
       )}
