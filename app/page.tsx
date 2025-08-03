@@ -56,7 +56,7 @@ const Page: React.FC = () => {
 
         {/* Logo #2: TY Designs */}
         <MotionImage
-          src="/tino-logo.jpg"
+          src="/tino-logo.png"
           alt="TY Designs Logo"
           width={96}
           height={96}
