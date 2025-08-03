@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import { FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 
 const contactMessages = [
-  "📩 Let&apos;s collaborate on your next big idea.",
-  "📞 Reach out — we&apos;re just a message away.",
+  "📩 Let's collaborate on your next big idea.",
+  "📞 Reach out — we're just a message away.",
   "📍 TY Designs, connecting visions worldwide.",
 ];
 
@@ -16,6 +16,7 @@ const ContactPage: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [currentMessage, setCurrentMessage] = useState(0);
   const isSidebarVisible = showSidebar;
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const timer = setTimeout(() => setTransitionComplete(true), 800);
@@ -35,8 +36,6 @@ const ContactPage: React.FC = () => {
     }
   }, []);
 
-  const currentYear = new Date().getFullYear();
-
   return (
     <div
       className={`flex flex-col sm:flex-row min-h-screen transition-all duration-1000 ease-in-out ${
@@ -47,11 +46,13 @@ const ContactPage: React.FC = () => {
       {!isSidebarVisible && (
         <button
           onClick={() => setShowSidebar(true)}
-          className="fixed top-4 left-4 z-30 bg-black text-white px-3 py-2 rounded shadow-md hover:bg-gray-800 transition">
+          className="fixed top-4 left-4 z-30 bg-black text-white px-3 py-2 rounded shadow-md hover:bg-gray-800 transition"
+          aria-label="Open sidebar">
           ☰
         </button>
       )}
 
+      {/* ✅ Sidebar close now works correctly */}
       <Sidebar
         isOpen={isSidebarVisible}
         onClose={() => setShowSidebar(false)}
@@ -63,7 +64,7 @@ const ContactPage: React.FC = () => {
             ? "bg-[url('/tinos.png')] bg-center bg-cover bg-no-repeat mix-blend-multiply opacity-100"
             : "opacity-0"
         }`}>
-        {/* Rotating Banner */}
+        {/* Banner Message */}
         <div
           className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg transition-opacity duration-500 z-20 text-center max-w-[90vw] shadow-md backdrop-blur-md"
           aria-live="polite"
@@ -71,7 +72,7 @@ const ContactPage: React.FC = () => {
           {contactMessages[currentMessage]}
         </div>
 
-        {/* Hero Section */}
+        {/* Hero */}
         <div className="relative z-10 text-center mb-16">
           <motion.h1
             initial={{ opacity: 0, scale: 0.8 }}
@@ -91,7 +92,7 @@ const ContactPage: React.FC = () => {
           </motion.h2>
         </div>
 
-        {/* Contact Info Cards */}
+        {/* Contact Cards */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10 text-black">
           {[
             {

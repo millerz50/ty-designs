@@ -59,15 +59,13 @@ const cardVariants: Variants = {
 };
 
 const DesignsDonePage: React.FC = () => {
-  const [transitionComplete, setTransitionComplete] = useState<boolean>(false);
-  const [showSidebar, setShowSidebar] = useState<boolean>(false);
-  const [currentTip, setCurrentTip] = useState<number>(0);
-  const [filteredType, setFilteredType] = useState<string>("All");
+  const [transitionComplete, setTransitionComplete] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [currentTip, setCurrentTip] = useState(0);
+  const [filteredType, setFilteredType] = useState("All");
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const currentYear: number = new Date().getFullYear();
-
-  const isSidebarVisible: boolean = showSidebar || transitionComplete;
+  const [isLoading, setIsLoading] = useState(true);
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const timer = setTimeout(() => setTransitionComplete(true), 800);
@@ -97,13 +95,14 @@ const DesignsDonePage: React.FC = () => {
     return () => window.removeEventListener("keydown", escHandler);
   }, []);
 
-  const filteredImages: GalleryImage[] =
+  const filteredImages =
     filteredType === "All"
       ? galleryImages
       : galleryImages.filter((img) => img.type === filteredType);
 
   return (
     <div className="flex flex-col sm:flex-row min-h-screen bg-neutral-50 transition-all duration-1000 ease-in-out relative">
+      {/* Overlay for closing sidebar */}
       {showSidebar && (
         <div
           onClick={() => setShowSidebar(false)}
@@ -111,13 +110,14 @@ const DesignsDonePage: React.FC = () => {
         />
       )}
 
-      <Sidebar isOpen={isSidebarVisible} onClose={() => setShowSidebar(true)} />
+      {/* 🔧 Fixed: sidebar closes properly now */}
+      <Sidebar isOpen={showSidebar} onClose={() => setShowSidebar(false)} />
 
       <main
         className={`min-h-screen flex-1 font-sans relative overflow-hidden px-6 py-10 sm:px-12 sm:py-16 transition-opacity duration-1000 ease-in-out ${
           transitionComplete ? "opacity-100" : "opacity-0"
         }`}>
-        {/* Banner */}
+        {/* Tip Banner */}
         <div
           className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-yellow-500 bg-opacity-70 text-white px-4 py-2 rounded-lg z-20 text-center max-w-[90vw] shadow-md backdrop-blur-md"
           aria-live="polite"
@@ -145,14 +145,14 @@ const DesignsDonePage: React.FC = () => {
           </motion.h2>
         </div>
 
-        {/* Gallery */}
+        {/* Gallery Filter */}
         <section className="mt-8 max-w-screen-lg w-full relative z-10">
           <div className="text-center mb-6">
             <h3 className="text-2xl font-semibold text-yellow-500 mb-4">
               Designs Gallery
             </h3>
             <select
-              value={filteredType || "All"}
+              value={filteredType}
               onChange={(e) => setFilteredType(e.target.value)}
               className="bg-white/10 backdrop-blur-md border border-yellow-400 text-yellow-200 font-semibold px-4 py-2 rounded-md shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300">
               <option value="All">All</option>
@@ -164,6 +164,7 @@ const DesignsDonePage: React.FC = () => {
             </select>
           </div>
 
+          {/* Gallery Grid */}
           {isLoading ? (
             <motion.div
               initial="hidden"
@@ -205,7 +206,7 @@ const DesignsDonePage: React.FC = () => {
         <footer className="mt-20 text-center text-gray-700 text-sm py-8 relative z-10">
           © {currentYear} Tinotenda James — All rights reserved
           <br />
-          <span>Don&apos;t hesitate to reach out</span>
+          <span>Don’t hesitate to reach out</span>
         </footer>
       </main>
     </div>

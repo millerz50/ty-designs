@@ -1,5 +1,4 @@
-// app/layout.tsx
-
+import WhatsAppBubble from "@/components/WhatsAppBubble"; // ✅ Import the bubble
 import { Montserrat } from "next/font/google";
 import Head from "next/head";
 import "./globals.css";
@@ -65,7 +64,11 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <body className="bg-white text-black font-montserrat">{children}</body>
+      <body className="bg-white text-black font-montserrat">
+        {children}
+        <WhatsAppBubble phoneNumber="263780618259" />{" "}
+        {/* 💬 Floating WhatsApp Chat */}
+      </body>
     </html>
   );
 }
