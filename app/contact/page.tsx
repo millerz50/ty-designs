@@ -1,14 +1,13 @@
 "use client";
 
 import Sidebar from "@/components/sidebar";
-import { useIsLargeScreen } from "@/hooks/useIsLargeScreen";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 
 const contactMessages = [
-  "📩 Let's collaborate on your next big idea.",
-  "📞 Reach out — we're just a message away.",
+  "📩 Let&apos;s collaborate on your next big idea.",
+  "📞 Reach out — we&apos;re just a message away.",
   "📍 TY Designs, connecting visions worldwide.",
 ];
 
@@ -16,8 +15,6 @@ const ContactPage: React.FC = () => {
   const [transitionComplete, setTransitionComplete] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [currentMessage, setCurrentMessage] = useState(0);
-
-  const isLargeScreen = useIsLargeScreen();
   const isSidebarVisible = showSidebar;
 
   useEffect(() => {
@@ -32,12 +29,11 @@ const ContactPage: React.FC = () => {
     };
   }, []);
 
-  // Ensure sidebar opens by default on large screens
   useEffect(() => {
-    if (isLargeScreen) {
+    if (window.innerWidth >= 640) {
       setShowSidebar(true);
     }
-  }, [isLargeScreen]);
+  }, []);
 
   const currentYear = new Date().getFullYear();
 
@@ -67,7 +63,7 @@ const ContactPage: React.FC = () => {
             ? "bg-[url('/tinos.png')] bg-center bg-cover bg-no-repeat mix-blend-multiply opacity-100"
             : "opacity-0"
         }`}>
-        {/* Rotating Message Banner */}
+        {/* Rotating Banner */}
         <div
           className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg transition-opacity duration-500 z-20 text-center max-w-[90vw] shadow-md backdrop-blur-md"
           aria-live="polite"

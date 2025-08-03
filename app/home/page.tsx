@@ -1,7 +1,7 @@
 "use client";
 
 import Sidebar from "@/components/sidebar";
-import { useIsLargeScreen } from "@/hooks/useIsLargeScreen";
+import { useIsLargeScreen } from "@/hooks/useIsLargeScreen"; // Optional hook if needed
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -17,7 +17,6 @@ const Page: React.FC = () => {
   const [currentAlert, setCurrentAlert] = useState(0);
 
   const isLargeScreen = useIsLargeScreen();
-  //const isSidebarVisible = isLargeScreen || showSidebar;
   const isSidebarVisible = showSidebar;
 
   useEffect(() => {
@@ -44,7 +43,8 @@ const Page: React.FC = () => {
       {!isSidebarVisible && (
         <button
           onClick={() => setShowSidebar(true)}
-          className="fixed top-4 left-4 z-30 bg-black text-white px-3 py-2 rounded">
+          className="fixed top-4 left-4 z-30 bg-black text-white px-3 py-2 rounded"
+          aria-label="Toggle sidebar">
           ☰
         </button>
       )}
@@ -67,18 +67,22 @@ const Page: React.FC = () => {
         <div
           className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-yellow-500 bg-opacity-70 text-white px-4 py-2 rounded transition-opacity duration-500 z-20 text-center max-w-[90vw] break-words backdrop-blur-md shadow-md"
           aria-live="polite"
+          aria-label="Site alerts"
           role="status">
           {alerts[currentAlert]}
         </div>
 
         {/* Hero Section */}
-        <div className="relative z-10 flex flex-col justify-center items-center max-w-screen-lg mx-auto text-center animate-fadeIn">
+        <div className="relative z-10 flex flex-col justify-center items-center max-w-screen-lg mx-auto text-center">
           <motion.h1
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
             className="font-extrabold leading-none text-white drop-shadow-lg tracking-tight"
-            style={{ fontSize: "clamp(3rem, 10vw, 10rem)" }}>
+            style={{
+              fontSize: "clamp(3rem, 10vw, 10rem)",
+              willChange: "opacity, transform",
+            }}>
             {currentYear}
           </motion.h1>
 
@@ -97,36 +101,35 @@ const Page: React.FC = () => {
 
         {/* Portfolio Sections */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-16 px-4 sm:px-12 relative z-10">
-          <div className="bg-white/10 p-6 rounded-lg backdrop-blur-md hover:scale-105 transition shadow-lg text-white">
-            <h3 className="text-xl font-semibold uppercase text-yellow-400">
-              Services
-            </h3>
-            <p className="text-sm mt-2 text-gray-300">
-              I offer customized creative services that bring ideas to life —
-              from bold logo designs to captivating photography. My process is
-              personalized, goal-oriented, and tailored to every client.
-            </p>
-          </div>
-          <div className="bg-white/10 p-6 rounded-lg backdrop-blur-md hover:scale-105 transition shadow-lg text-white">
-            <h3 className="text-xl font-semibold uppercase text-yellow-400">
-              Experiences
-            </h3>
-            <p className="text-sm mt-2 text-gray-300">
-              I’ve collaborated across diverse industries, building expertise
-              through hands-on design and storytelling. My approach is rooted in
-              clear communication, trust, and creative vision.
-            </p>
-          </div>
-          <div className="bg-white/10 p-6 rounded-lg backdrop-blur-md hover:scale-105 transition shadow-lg text-white">
-            <h3 className="text-xl font-semibold uppercase text-yellow-400">
-              Design
-            </h3>
-            <p className="text-sm mt-2 text-gray-300">
-              My philosophy blends simplicity with edge. Whether it's branding
-              or layout, I push for clarity, elegance, and fresh perspectives —
-              creating designs that connect visually and emotionally.
-            </p>
-          </div>
+          {[
+            {
+              title: "Services",
+              description:
+                "I offer customized creative services that bring ideas to life — from bold logo designs to captivating photography. My process is personalized, goal-oriented, and tailored to every client.",
+            },
+            {
+              title: "Experiences",
+              description:
+                "I’ve collaborated across diverse industries, building expertise through hands-on design and storytelling. My approach is rooted in clear communication, trust, and creative vision.",
+            },
+            {
+              title: "Design",
+              description:
+                "My philosophy blends simplicity with edge. Whether it's branding or layout, I push for clarity, elegance, and fresh perspectives — creating designs that connect visually and emotionally.",
+            },
+          ].map((card, i) => (
+            <motion.div
+              key={card.title}
+              initial={{ opacity: 0, scale: 0.95, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ delay: i * 0.2, duration: 0.6, ease: "easeOut" }}
+              className="bg-white/10 p-6 rounded-lg backdrop-blur-md hover:scale-105 transition shadow-lg text-white">
+              <h3 className="text-xl font-semibold uppercase text-yellow-400">
+                {card.title}
+              </h3>
+              <p className="text-sm mt-2 text-gray-300">{card.description}</p>
+            </motion.div>
+          ))}
         </section>
 
         {/* Footer */}

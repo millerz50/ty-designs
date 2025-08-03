@@ -1,7 +1,6 @@
 "use client";
 
 import Sidebar from "@/components/sidebar";
-import { useIsLargeScreen } from "@/hooks/useIsLargeScreen";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaAward, FaBriefcase, FaUsers } from "react-icons/fa";
@@ -17,9 +16,8 @@ const ExperiencesPage: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [currentExperience, setCurrentExperience] = useState(0);
 
-  const isLargeScreen = useIsLargeScreen();
-  const isSidebarVisible = showSidebar;
   const currentYear = new Date().getFullYear();
+  const isSidebarVisible = showSidebar;
 
   useEffect(() => {
     const timer = setTimeout(() => setTransitionComplete(true), 800);
@@ -33,8 +31,10 @@ const ExperiencesPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (isLargeScreen) setShowSidebar(true);
-  }, [isLargeScreen]);
+    if (window.innerWidth >= 640) {
+      setShowSidebar(true);
+    }
+  }, []);
 
   const highlights = [
     {
@@ -92,7 +92,7 @@ const ExperiencesPage: React.FC = () => {
         </div>
 
         {/* Header Section */}
-        <div className="relative z-10 flex flex-col justify-center items-center max-w-screen-lg mx-auto text-center animate-fadeIn mb-16">
+        <div className="relative z-10 flex flex-col justify-center items-center max-w-screen-lg mx-auto text-center mb-16">
           <motion.h1
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

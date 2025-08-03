@@ -1,16 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+
+// Motion wrapper for optimized Next.js Image
+const MotionImage = motion(Image);
 
 const Page: React.FC = () => {
   const router = useRouter();
-  const [transitionComplete, setTransitionComplete] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setTransitionComplete(true);
       router.push("/home");
     }, 3000);
     return () => clearTimeout(timer);
@@ -18,7 +20,7 @@ const Page: React.FC = () => {
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-black text-white font-sans relative overflow-hidden">
-      {/* Glow swirl */}
+      {/* Swirl background */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.2 }}
@@ -32,17 +34,19 @@ const Page: React.FC = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         className="flex flex-col items-center justify-center z-10">
-        {/* Logo 1 */}
-        <motion.img
+        {/* Logo #1: Millerz */}
+        <MotionImage
           src="/Millerz-logo.png"
           alt="Millerz Logo"
+          width={128}
+          height={128}
           initial={{ scale: 0.5, rotate: -45, opacity: 0 }}
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{ duration: 1.4, ease: "easeOut" }}
-          className="w-32 h-32 mb-4"
+          className="mb-4"
         />
 
-        {/* Spinner */}
+        {/* Spinner animation */}
         <motion.div
           initial={{ rotate: 0 }}
           animate={{ rotate: 360 }}
@@ -50,17 +54,18 @@ const Page: React.FC = () => {
           className="w-6 h-6 border-2 border-yellow-400 border-t-transparent rounded-full mb-4"
         />
 
-        {/* Logo 2 */}
-        <motion.img
+        {/* Logo #2: TY Designs */}
+        <MotionImage
           src="/tino-logo.jpg"
           alt="TY Designs Logo"
+          width={96}
+          height={96}
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.6, duration: 1 }}
-          className="w-24 h-24"
         />
 
-        {/* Branding badge */}
+        {/* Brand badge */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

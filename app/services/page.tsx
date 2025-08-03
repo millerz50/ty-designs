@@ -26,7 +26,6 @@ const ServicesPage: React.FC = () => {
     const alertInterval = setInterval(() => {
       setCurrentAlert((prev) => (prev + 1) % alerts.length);
     }, 3000);
-
     return () => {
       clearTimeout(timer);
       clearInterval(alertInterval);
@@ -95,8 +94,8 @@ const ServicesPage: React.FC = () => {
           {alerts[currentAlert]}
         </div>
 
-        {/* Hero Section */}
-        <div className="relative z-10 flex flex-col justify-center items-center max-w-screen-lg mx-auto text-center animate-fadeIn mb-16">
+        {/* Header */}
+        <div className="relative z-10 flex flex-col justify-center items-center max-w-screen-lg mx-auto text-center mb-16">
           <motion.h1
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

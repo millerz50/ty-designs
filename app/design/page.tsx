@@ -1,7 +1,6 @@
 "use client";
 
 import Sidebar from "@/components/sidebar";
-import { useIsLargeScreen } from "@/hooks/useIsLargeScreen";
 import { motion, Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -66,11 +65,9 @@ const DesignsDonePage: React.FC = () => {
   const [filteredType, setFilteredType] = useState<string>("All");
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const isLargeScreen = useIsLargeScreen();
-  const isSidebarVisible: boolean =
-    showSidebar || (isLargeScreen && transitionComplete);
   const currentYear: number = new Date().getFullYear();
+
+  const isSidebarVisible: boolean = showSidebar || transitionComplete;
 
   useEffect(() => {
     const timer = setTimeout(() => setTransitionComplete(true), 800);
@@ -107,20 +104,11 @@ const DesignsDonePage: React.FC = () => {
 
   return (
     <div className="flex flex-col sm:flex-row min-h-screen bg-neutral-50 transition-all duration-1000 ease-in-out relative">
-      {showSidebar && !isLargeScreen && (
+      {showSidebar && (
         <div
           onClick={() => setShowSidebar(false)}
           className="fixed inset-0 z-10 bg-transparent"
         />
-      )}
-
-      {!isLargeScreen && (
-        <button
-          onClick={() => setShowSidebar(true)}
-          aria-label="Open Sidebar"
-          className="fixed top-4 left-4 z-30 bg-black text-white px-3 py-2 rounded shadow-md hover:bg-gray-800 transition">
-          ☰
-        </button>
       )}
 
       <Sidebar isOpen={isSidebarVisible} onClose={() => setShowSidebar(true)} />
@@ -217,11 +205,7 @@ const DesignsDonePage: React.FC = () => {
         <footer className="mt-20 text-center text-gray-700 text-sm py-8 relative z-10">
           © {currentYear} Tinotenda James — All rights reserved
           <br />
-          <a
-            href="mailto:your@email.com"
-            className="underline hover:text-yellow-500">
-            Get in touch
-          </a>
+          <span>Don&apos;t hesitate to reach out</span>
         </footer>
       </main>
     </div>
